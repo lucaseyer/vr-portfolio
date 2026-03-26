@@ -367,17 +367,17 @@ export class PanelEntity implements InteractiveEntity {
       return;
     }
 
-    context.fillStyle = accent;
+    context.fillStyle = "rgba(25, 61, 78, 0.98)";
     context.font = "700 44px IBM Plex Mono, monospace";
     context.fillText(this.config.title.toUpperCase(), 48, 80);
 
-    context.fillStyle = "rgba(20, 38, 48, 0.84)";
-    context.font = "400 26px IBM Plex Mono, monospace";
+    context.fillStyle = "rgba(19, 48, 62, 0.98)";
+    context.font = "500 26px IBM Plex Mono, monospace";
     context.fillText(this.config.type === "dashboard" ? "OBSERVABILITY SURFACE" : this.config.type === "web" ? "WEB SURFACE" : "CAREER NODE", 48, 122);
 
     if (this.config.tags?.length) {
-      context.fillStyle = "rgba(53, 123, 148, 0.9)";
-      context.font = "400 20px IBM Plex Mono, monospace";
+      context.fillStyle = "rgba(43, 102, 124, 0.98)";
+      context.font = "500 20px IBM Plex Mono, monospace";
       context.fillText(this.config.tags.map((tag) => `#${tag}`).join("  "), 48, 156);
     }
 
@@ -445,12 +445,12 @@ export class PanelEntity implements InteractiveEntity {
     const filled = Math.floor((percent / 100) * bars);
     const loadingText = `${"█".repeat(filled)}${"░".repeat(bars - filled)} ${String(percent).padStart(2, "0")}%`;
 
-    context.fillStyle = accent;
+    context.fillStyle = "rgba(25, 61, 78, 0.98)";
     context.font = "700 46px IBM Plex Mono, monospace";
     context.fillText(this.config.title.toUpperCase(), 48, 88);
 
-    context.fillStyle = "rgba(27, 52, 65, 0.86)";
-    context.font = "400 25px IBM Plex Mono, monospace";
+    context.fillStyle = "rgba(19, 48, 62, 0.96)";
+    context.font = "500 25px IBM Plex Mono, monospace";
     context.fillText("SURFACE LOCKED // visual stream initializing", 48, 142);
 
     context.strokeStyle = "rgba(137, 187, 206, 0.8)";
@@ -520,17 +520,17 @@ export class PanelEntity implements InteractiveEntity {
   }
 
   private drawResumeSurface(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.config.color ?? "#ffd6a6";
+    context.fillStyle = "rgba(25, 61, 78, 0.98)";
     context.font = "700 44px IBM Plex Mono, monospace";
     context.fillText(this.config.title.toUpperCase(), 48, 80);
 
-    context.fillStyle = "rgba(20, 38, 48, 0.84)";
-    context.font = "400 26px IBM Plex Mono, monospace";
+    context.fillStyle = "rgba(19, 48, 62, 0.98)";
+    context.font = "500 26px IBM Plex Mono, monospace";
     context.fillText("DOCUMENT SURFACE", 48, 122);
 
     if (this.config.tags?.length) {
-      context.fillStyle = "rgba(53, 123, 148, 0.9)";
-      context.font = "400 20px IBM Plex Mono, monospace";
+      context.fillStyle = "rgba(43, 102, 124, 0.98)";
+      context.font = "500 20px IBM Plex Mono, monospace";
       context.fillText(this.config.tags.map((tag) => `#${tag}`).join("  "), 48, 156);
     }
 

@@ -7,6 +7,7 @@ import { PortfolioRenderer } from "./core/renderer";
 import { InputController } from "./core/input";
 import { PortfolioScene } from "./core/scene";
 import { ComputerTerminal } from "./entities/computerTerminal";
+import { EmbeddedWebSurface } from "./entities/embeddedWebSurface";
 import { PanelEntity } from "./entities/panel";
 import { InteractionSystem } from "./systems/interactionSystem";
 import { NavigationSystem } from "./systems/navigationSystem";
@@ -42,18 +43,23 @@ async function bootstrap(): Promise<void> {
   scene.add(room.group);
 
   // Panels are data-driven entities, so adding a new surface is a content change rather than a scene rewrite.
+  const panelConfigs = (panels as PanelConfig[]).map((config) => ({
+    ...config,
+    imageUrl: withBaseUrl(config.imageUrl),
+    data: withBaseUrl(config.data),
+  }));
+
   const panelEntities = await Promise.all(
-    (panels as PanelConfig[]).map((config) =>
-      PanelEntity.create({
-        ...config,
-        imageUrl: withBaseUrl(config.imageUrl),
-        data: withBaseUrl(config.data),
-      }),
-    ),
+    panelConfigs.map((config) => PanelEntity.create(config)),
   );
 
-  panelEntities.forEach((panel) => {
+  panelEntities.forEach((panel, index) => {
     room.mountPanel(panel);
+
+    const config = panelConfigs[index];
+    if (config.embed && config.url) {
+      panel.group.add(new EmbeddedWebSurface(config).object3D);
+    }
   });
 
   const terminal = new ComputerTerminal(overlay);

@@ -1,14 +1,23 @@
 [
   {
-    "id": "tabula",
+    "id": "live-portfolio",
     "type": "web",
-    "title": "Tabula QA",
-    "summary": "QA tooling surface focused on DOM analysis, resilient locators, and embeddable product views.",
-    "url": "https://lucaseyer.dev/tabula-qa",
-    "position": [-7.15, 2.35, -4.15],
-    "rotationY": 1.02,
+    "title": "LucasEyer.dev",
+    "summary": "Live portfolio surface rendering the public site directly inside the room.",
+    "url": "https://lucaseyer.dev",
+    "position": [
+      -6.25,
+      2.45,
+      -7.35
+    ],
+    "rotationY": 0.28,
     "color": "#60d4ff",
-    "tags": ["dom", "locators", "web"]
+    "tags": [
+      "live",
+      "site",
+      "web"
+    ],
+    "embed": true
   },
   {
     "id": "about",
@@ -27,16 +36,24 @@
         "url": "https://linkedin.com/in/lucas-eyer"
       }
     ],
-    "position": [-2.9, 2.45, -7.55],
-    "rotationY": 0.2,
+    "position": [
+      -2.55,
+      2.45,
+      -7.55
+    ],
+    "rotationY": 0.12,
     "color": "#8dffda",
-    "tags": ["qa", "architecture", "observability"]
+    "tags": [
+      "qa",
+      "architecture",
+      "observability"
+    ]
   },
   {
     "id": "resume-highlights",
     "type": "text",
     "title": "Resume Highlights",
-    "summary": "Full résumé page presented as an in-world surface.",
+    "summary": "Full r\u00e9sum\u00e9 page presented as an in-world surface.",
     "content": "",
     "imageUrl": "/images/LucasEyerQA_en-landscape.png",
     "links": [
@@ -45,12 +62,26 @@
         "url": "https://lucaseyer.dev/LucasEyerQA_en.pdf"
       }
     ],
-    "position": [4.35, 2.5, -7.45],
-    "rotationY": -0.24,
-    "panelSize": [5.9, 3.9],
-    "canvasSize": [2400, 1680],
+    "position": [
+      4.2,
+      2.5,
+      -7.45
+    ],
+    "rotationY": -0.2,
+    "panelSize": [
+      5.9,
+      3.9
+    ],
+    "canvasSize": [
+      2400,
+      1680
+    ],
     "color": "#ffd6a6",
-    "tags": ["resume", "experience", "highlights"]
+    "tags": [
+      "resume",
+      "experience",
+      "highlights"
+    ]
   },
   {
     "id": "observability",
@@ -59,9 +90,17 @@
     "summary": "Test observability concepts represented as a spatial dashboard panel.",
     "content": "Mock observability signals for a future room dedicated to execution quality, scoring, and test health analysis.",
     "data": "/data/metrics.json",
-    "position": [7.15, 2.35, -4.15],
+    "position": [
+      7.15,
+      2.35,
+      -4.15
+    ],
     "rotationY": -1.02,
     "color": "#80b2ff",
-    "tags": ["signals", "metrics", "inputs"]
+    "tags": [
+      "signals",
+      "metrics",
+      "inputs"
+    ]
   }
 ]

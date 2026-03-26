@@ -17,6 +17,7 @@ export interface PanelConfig {
   data?: string;
   links?: LinkItem[];
   imageUrl?: string;
+  embed?: boolean;
   position: [number, number, number];
   rotationY?: number;
   panelSize?: [number, number];
