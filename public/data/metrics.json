@@ -1,0 +1,44 @@
+{
+  "metrics": [
+    {
+      "id": "signal_accuracy",
+      "label": "Signal Accuracy",
+      "value": 96,
+      "unit": "%",
+      "source": "quality.signal_accuracy",
+      "status": "live"
+    },
+    {
+      "id": "flake_reduction",
+      "label": "Flake Reduction",
+      "value": 41,
+      "unit": "%",
+      "source": "quality.flake_reduction",
+      "status": "live"
+    },
+    {
+      "id": "execution_health",
+      "label": "Execution Health",
+      "value": 89,
+      "unit": "%",
+      "source": "quality.execution_health",
+      "status": "live"
+    },
+    {
+      "id": "root_cause_map",
+      "label": "Root Cause Coverage",
+      "value": 73,
+      "unit": "%",
+      "source": "quality.root_cause_coverage",
+      "status": "live"
+    },
+    {
+      "id": "next_input",
+      "label": "Failure Taxonomy Input",
+      "value": "pending",
+      "placeholder": "connect integration payload",
+      "source": "quality.failure_taxonomy",
+      "status": "placeholder"
+    }
+  ]
+}

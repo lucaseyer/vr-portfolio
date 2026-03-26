@@ -1,0 +1,159 @@
+:root {
+  color-scheme: light;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  background:
+    radial-gradient(circle at top, rgba(120, 188, 213, 0.26), transparent 35%),
+    linear-gradient(180deg, #f7fbfd 0%, #eef5f8 100%);
+  color: #143241;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background:
+    radial-gradient(circle at center, rgba(143, 206, 227, 0.24), transparent 30%),
+    linear-gradient(180deg, #fbfdfe 0%, #edf4f8 100%);
+}
+
+canvas {
+  display: block;
+}
+
+.ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud-card,
+.intro-card {
+  border: 1px solid rgba(129, 221, 255, 0.32);
+  background: rgba(224, 229, 233, 0.9);
+  box-shadow: 0 0 40px rgba(81, 159, 188, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.instructions {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  width: 320px;
+  padding: 16px 18px;
+}
+
+.instructions h1,
+.intro-card h1 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #3c7c98;
+}
+
+.instructions p,
+.intro-card p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 14px;
+  color: rgba(20, 50, 65, 0.86);
+}
+
+.reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  border: 2px solid rgba(176, 52, 52, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.reticle::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: rgba(176, 52, 52, 0.85);
+}
+
+.status {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  min-width: 260px;
+  padding: 14px 16px;
+}
+
+.status strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #336b84;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.intro-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at center, rgba(30, 101, 139, 0.22), transparent 30%),
+    rgba(242, 248, 251, 0.9);
+  pointer-events: auto;
+}
+
+.intro-shell.is-hidden {
+  display: none;
+}
+
+.intro-card {
+  width: min(760px, calc(100vw - 48px));
+  padding: 30px;
+  text-align: center;
+}
+
+.intro-card .intro-kicker {
+  margin-bottom: 12px;
+  color: #3f7f99;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 13px;
+}
+
+.intro-card h1 {
+  margin-bottom: 18px;
+  font-size: clamp(30px, 5vw, 56px);
+  letter-spacing: 0.1em;
+}
+
+.intro-card button {
+  border: 1px solid rgba(129, 221, 255, 0.38);
+  background: rgba(239, 242, 245, 0.98);
+  color: #153443;
+  padding: 14px 18px;
+  font: inherit;
+  cursor: pointer;
+  margin-top: 24px;
+  letter-spacing: 0.08em;
+}
+
+.intro-card button:hover {
+  background: rgba(228, 241, 247, 0.96);
+}

@@ -1,0 +1,82 @@
+{
+  "projects": [
+    {
+      "id": "automation-engine",
+      "name": "Automation Engine",
+      "dialogue": [
+        "Built reliable test automation focused on reducing false positives.",
+        "Turned brittle checks into maintainable suites with clearer signals."
+      ],
+      "meta": [
+        "role: qa engineer",
+        "focus: automation architecture",
+        "impact: faster release confidence"
+      ]
+    },
+    {
+      "id": "release-guardian",
+      "name": "Release Guardian",
+      "dialogue": [
+        "Created regression coverage around high-risk user journeys.",
+        "Improved delivery cadence by catching failures before staging drift."
+      ],
+      "meta": [
+        "role: quality advocate",
+        "focus: regression strategy",
+        "impact: fewer escaped defects"
+      ]
+    },
+    {
+      "id": "revelium",
+      "name": "Project Revelium",
+      "dialogue": [
+        "Designed the analysis and scoring layer for test observability.",
+        "Connected execution data to actionable quality signals for teams."
+      ],
+      "meta": [
+        "role: product-minded builder",
+        "focus: observability",
+        "impact: measurable test health"
+      ]
+    },
+    {
+      "id": "signal-lab",
+      "name": "Signal Lab",
+      "dialogue": [
+        "Mapped flaky behavior patterns to root-cause categories.",
+        "Used concise telemetry to separate noise from product risk."
+      ],
+      "meta": [
+        "role: systems thinker",
+        "focus: flake analysis",
+        "impact: better engineering decisions"
+      ]
+    },
+    {
+      "id": "tabula-qa",
+      "name": "Tabula QA",
+      "dialogue": [
+        "Explored DOM mapping and intelligent locator extraction.",
+        "Shaped QA tooling that reads interfaces the way analysts do."
+      ],
+      "meta": [
+        "role: toolsmith",
+        "focus: dom intelligence",
+        "impact: resilient selectors"
+      ]
+    },
+    {
+      "id": "career-api",
+      "name": "Career API",
+      "dialogue": [
+        "Packaged experience, projects, and skills into reusable developer tooling.",
+        "Focused on clean interfaces, modular systems, and practical delivery."
+      ],
+      "meta": [
+        "role: software architect",
+        "focus: platform design",
+        "impact: portfolio as product"
+      ]
+    }
+  ]
+}
