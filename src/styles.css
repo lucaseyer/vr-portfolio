@@ -26,18 +26,9 @@ body {
     linear-gradient(180deg, #fbfdfe 0%, #edf4f8 100%);
 }
 
-canvas {
+canvas,
+.webgl-layer {
   display: block;
-}
-
-.webgl-layer,
-.css3d-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.css3d-layer {
-  pointer-events: none;
 }
 
 

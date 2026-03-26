@@ -50,7 +50,7 @@ export class OverlayUI {
     this.instructions.innerHTML = `
       <h1>Developer Lab</h1>
       <p>WASD to move, click the room to enable mouse look, E or click to interact.</p>
-      <p>Press Esc any time to release the mouse. The live-site panel includes external links beside it.</p>
+      <p>Press Esc any time to release the mouse. Work-experience buttons project content into the live-site panel.</p>
     `;
     this.setStatus("System ready", "Click PLAY MY CAREER to enter the room.");
   }

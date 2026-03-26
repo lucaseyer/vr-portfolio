@@ -7,7 +7,6 @@ import { PortfolioRenderer } from "./core/renderer";
 import { InputController } from "./core/input";
 import { PortfolioScene } from "./core/scene";
 import { ComputerTerminal } from "./entities/computerTerminal";
-import { EmbeddedWebSurface } from "./entities/embeddedWebSurface";
 import { PanelEntity } from "./entities/panel";
 import { SiteLinkRail } from "./entities/siteLinkRail";
 import { InteractionSystem } from "./systems/interactionSystem";
@@ -43,7 +42,6 @@ async function bootstrap(): Promise<void> {
   const room = createRoom();
   scene.add(room.group);
 
-  // Panels are data-driven entities, so adding a new surface is a content change rather than a scene rewrite.
   const panelConfigs = (panels as PanelConfig[]).map((config) => ({
     ...config,
     imageUrl: withBaseUrl(config.imageUrl),
@@ -53,18 +51,6 @@ async function bootstrap(): Promise<void> {
   const panelEntities = await Promise.all(
     panelConfigs.map((config) => PanelEntity.create(config)),
   );
-
-  panelEntities.forEach((panel, index) => {
-    room.mountPanel(panel);
-
-    const config = panelConfigs[index];
-    if (config.embed && config.url) {
-      panel.group.add(new EmbeddedWebSurface(config).object3D);
-      const rail = new SiteLinkRail(overlay);
-      panel.group.add(rail.group);
-      (panel as PanelEntity & { siteRail?: SiteLinkRail }).siteRail = rail;
-    }
-  });
 
   const terminal = new ComputerTerminal(overlay);
   room.group.add(terminal.group);
@@ -77,12 +63,21 @@ async function bootstrap(): Promise<void> {
     },
   });
 
-  panelEntities.forEach((panel) => interactionSystem.register(panel));
-  panelEntities.forEach((panel) => panel.interactives.forEach((entity) => interactionSystem.register(entity)));
-  panelEntities.forEach((panel) => {
-    const rail = (panel as PanelEntity & { siteRail?: SiteLinkRail }).siteRail;
-    rail?.interactives.forEach((entity) => interactionSystem.register(entity));
+  panelEntities.forEach((panel, index) => {
+    room.mountPanel(panel);
+    interactionSystem.register(panel);
+    panel.interactives.forEach((entity) => interactionSystem.register(entity));
+
+    const config = panelConfigs[index];
+    if (config.embed) {
+      const rail = new SiteLinkRail(overlay, (item) => {
+        void panel.selectExperience(item);
+      });
+      panel.group.add(rail.group);
+      rail.interactives.forEach((entity) => interactionSystem.register(entity));
+    }
   });
+
   terminal.interactives.forEach((entity) => interactionSystem.register(entity));
 
   const engine = new PortfolioEngine({

@@ -3,25 +3,28 @@ import * as THREE from "three";
 import { InteractiveEntity } from "./interactive";
 import { OverlayUI } from "../ui/overlay";
 
-interface SiteLinkItem {
+export interface ExperienceLinkItem {
   label: string;
   url: string;
   detail: string;
+  fallback: string[];
 }
 
-class SiteLinkButton implements InteractiveEntity {
+class ExperienceLinkButton implements InteractiveEntity {
   public readonly object3D: THREE.Object3D;
   public readonly label: string;
 
   private readonly mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   private readonly material: THREE.MeshBasicMaterial;
-  private readonly url: string;
+  private readonly item: ExperienceLinkItem;
   private readonly overlay: OverlayUI;
+  private readonly onSelect: (item: ExperienceLinkItem) => void;
 
-  constructor(position: THREE.Vector3, item: SiteLinkItem, overlay: OverlayUI) {
+  constructor(position: THREE.Vector3, item: ExperienceLinkItem, overlay: OverlayUI, onSelect: (item: ExperienceLinkItem) => void) {
     this.label = item.label;
-    this.url = item.url;
+    this.item = item;
     this.overlay = overlay;
+    this.onSelect = onSelect;
     this.material = new THREE.MeshBasicMaterial({
       map: createButtonTexture(item),
       color: "#ffffff",
@@ -39,12 +42,12 @@ class SiteLinkButton implements InteractiveEntity {
   }
 
   interact(): void {
-    window.open(this.url, "_blank", "noopener,noreferrer");
-    this.overlay.setStatus(this.label, "Opened experience page in a new tab.");
+    this.onSelect(this.item);
+    this.overlay.setStatus(this.label, "Projected into the in-world experience panel.");
   }
 }
 
-function createButtonTexture(item: SiteLinkItem): THREE.CanvasTexture {
+function createButtonTexture(item: ExperienceLinkItem): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
   canvas.width = 820;
   canvas.height = 200;
@@ -78,17 +81,62 @@ export class SiteLinkRail {
   public readonly group = new THREE.Group();
   public readonly interactives: InteractiveEntity[] = [];
 
-  constructor(overlay: OverlayUI) {
-    const items: SiteLinkItem[] = [
-      { label: "QA Specialist", url: "https://lucaseyer.dev/experience/work1", detail: "automation specialist // mobile and AI" },
-      { label: "SDET", url: "https://lucaseyer.dev/experience/work2", detail: "reliability and tooling engineering" },
-      { label: "QA Manager", url: "https://lucaseyer.dev/experience/work3", detail: "quality strategy and delivery leadership" },
-      { label: "DevOps/SRE", url: "https://lucaseyer.dev/experience/work4", detail: "platform operations and observability" },
-      { label: "QA Architect", url: "https://lucaseyer.dev/experience/work5", detail: "test architecture and systems design" },
+  constructor(overlay: OverlayUI, onSelect: (item: ExperienceLinkItem) => void) {
+    const items: ExperienceLinkItem[] = [
+      {
+        label: "QA Specialist",
+        url: "https://lucaseyer.dev/experience/work1",
+        detail: "automation specialist // mobile and AI",
+        fallback: [
+          "Built automation for mobile and AI validation surfaces.",
+          "Reduced regression noise with practical execution tooling.",
+          "Worked across UI flows, API checks, and device-oriented validation.",
+        ],
+      },
+      {
+        label: "SDET",
+        url: "https://lucaseyer.dev/experience/work2",
+        detail: "reliability and tooling engineering",
+        fallback: [
+          "Focused on test reliability, tooling, and resilient execution layers.",
+          "Improved confidence signals for broader engineering teams.",
+          "Built systems that reduce flaky behavior and improve feedback quality.",
+        ],
+      },
+      {
+        label: "QA Manager",
+        url: "https://lucaseyer.dev/experience/work3",
+        detail: "quality strategy and delivery leadership",
+        fallback: [
+          "Led quality strategy with delivery focus and clear release signals.",
+          "Coordinated process, coverage, and risk visibility across teams.",
+          "Balanced execution speed with stronger validation discipline.",
+        ],
+      },
+      {
+        label: "DevOps/SRE",
+        url: "https://lucaseyer.dev/experience/work4",
+        detail: "platform operations and observability",
+        fallback: [
+          "Worked on infrastructure reliability, observability, and operations.",
+          "Improved system feedback loops, automation, and release resilience.",
+          "Connected quality concerns with runtime and platform health.",
+        ],
+      },
+      {
+        label: "QA Architect",
+        url: "https://lucaseyer.dev/experience/work5",
+        detail: "test architecture and systems design",
+        fallback: [
+          "Designed testing architecture around signal quality and maintainability.",
+          "Built scalable validation layers across multiple product surfaces.",
+          "Connected automation strategy with platform and product thinking.",
+        ],
+      },
     ];
 
     items.forEach((item, index) => {
-      const button = new SiteLinkButton(new THREE.Vector3(2.16, 0.92 - index * 0.42, 0.11), item, overlay);
+      const button = new ExperienceLinkButton(new THREE.Vector3(2.16, 0.92 - index * 0.42, 0.11), item, overlay, onSelect);
       this.interactives.push(button);
       this.group.add(button.object3D);
     });

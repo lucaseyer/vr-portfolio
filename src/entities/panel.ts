@@ -2,10 +2,20 @@ import * as THREE from "three";
 
 import { InteractiveEntity } from "./interactive";
 import { DashboardMetric, InteractionContext, LinkItem, PanelConfig } from "../types";
+import { ExperienceLinkItem } from "./siteLinkRail";
 
 interface LinkBadge {
   rect: { x: number; y: number; width: number; height: number };
   link: LinkItem;
+}
+
+interface ExperienceSurfaceState {
+  title: string;
+  url: string;
+  detail: string;
+  lines: string[];
+  source: "remote" | "fallback" | "idle";
+  status: "idle" | "loading" | "ready";
 }
 
 function createCanvas(width: number, height: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
@@ -207,6 +217,7 @@ export class PanelEntity implements InteractiveEntity {
   private readonly loadSpeed;
   private readonly canvasDimensions: { width: number; height: number };
   private readonly screenDimensions: { width: number; height: number };
+  private experienceSurface: ExperienceSurfaceState | null = null;
 
   private constructor(config: PanelConfig) {
     this.config = config;
@@ -288,6 +299,21 @@ export class PanelEntity implements InteractiveEntity {
       this.loadProgress = 100;
     }
 
+    if (config.embed) {
+      this.experienceSurface = {
+        title: "Select an experience",
+        url: config.url ?? "",
+        detail: "Use the work-experience buttons on the right to project a role here.",
+        lines: [
+          "This surface stays native to the room for predictable interaction.",
+          "Each button updates the panel with structured experience content.",
+          "If remote fetch is blocked, the panel falls back to mirrored summaries.",
+        ],
+        source: "idle",
+        status: "idle",
+      };
+    }
+
     this.renderTexture();
   }
 
@@ -302,6 +328,66 @@ export class PanelEntity implements InteractiveEntity {
 
   attachInteractionContext(context: InteractionContext): void {
     this.interactionContext = context;
+  }
+
+  async selectExperience(item: ExperienceLinkItem): Promise<void> {
+    this.experienceSurface = {
+      title: item.label,
+      url: item.url,
+      detail: item.detail,
+      lines: item.fallback,
+      source: "fallback",
+      status: "loading",
+    };
+    this.renderTexture();
+
+    try {
+      const response = await fetch(item.url, { mode: "cors" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${item.url}`);
+      }
+
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const root = doc.querySelector("main") ?? doc.body;
+      const nodes = Array.from(root.querySelectorAll("h1, h2, h3, p, li"));
+      const lines = nodes
+        .map((node) => (node.textContent ?? "").replace(/\s+/g, " ").trim())
+        .filter((line) => line.length > 28)
+        .slice(0, 7);
+
+      if (lines.length > 0) {
+        this.experienceSurface = {
+          title: item.label,
+          url: item.url,
+          detail: item.detail,
+          lines,
+          source: "remote",
+          status: "ready",
+        };
+      } else {
+        this.experienceSurface = {
+          title: item.label,
+          url: item.url,
+          detail: item.detail,
+          lines: item.fallback,
+          source: "fallback",
+          status: "ready",
+        };
+      }
+    } catch {
+      this.experienceSurface = {
+        title: item.label,
+        url: item.url,
+        detail: `${item.detail} // mirrored fallback`,
+        lines: item.fallback,
+        source: "fallback",
+        status: "ready",
+      };
+    }
+
+    this.renderTexture();
   }
 
   setHovered(hovered: boolean): void {
@@ -616,6 +702,53 @@ export class PanelEntity implements InteractiveEntity {
   }
 
   private drawWebSurface(context: CanvasRenderingContext2D): void {
+    if (this.config.embed && this.experienceSurface) {
+      const surface = this.experienceSurface;
+      const links: LinkItem[] = surface.url
+        ? [
+            { label: "Open Role", url: surface.url },
+            { label: "Open Site", url: this.config.url ?? surface.url },
+          ]
+        : [];
+
+      this.syncLinkHotspots(drawLinks(context, links, 856));
+
+      context.fillStyle = "rgba(39, 98, 122, 0.94)";
+      context.font = "600 22px IBM Plex Mono, monospace";
+      context.fillText("Experience Surface", 48, 338);
+
+      context.strokeStyle = "rgba(127, 187, 208, 0.75)";
+      context.strokeRect(48, 364, 928, 448);
+
+      context.fillStyle = "rgba(18, 45, 58, 0.98)";
+      context.font = "700 30px IBM Plex Mono, monospace";
+      context.fillText(surface.title.toUpperCase(), 72, 424);
+
+      context.fillStyle = "rgba(45, 108, 132, 0.96)";
+      context.font = "400 18px IBM Plex Mono, monospace";
+      context.fillText(surface.detail, 72, 460);
+
+      context.fillStyle = "rgba(61, 121, 142, 0.9)";
+      context.font = "400 16px IBM Plex Mono, monospace";
+      const sourceText = surface.status === "loading"
+        ? "source: loading remote page..."
+        : surface.source === "remote"
+          ? "source: pulled from lucaseyer.dev"
+          : surface.source === "fallback"
+            ? "source: mirrored fallback summary"
+            : "source: select a role";
+      context.fillText(sourceText, 72, 492);
+
+      context.fillStyle = "rgba(20, 38, 48, 0.92)";
+      context.font = "400 20px IBM Plex Mono, monospace";
+      let offsetY = 546;
+      surface.lines.forEach((line) => {
+        offsetY = wrapText(context, `- ${line}`, 72, offsetY, 876, 30, 2) + 12;
+      });
+
+      return;
+    }
+
     context.fillStyle = "rgba(48, 118, 142, 0.92)";
     context.font = "600 22px IBM Plex Mono, monospace";
     context.fillText("Embeddable web surface", 48, 338);
