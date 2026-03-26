@@ -114,7 +114,7 @@ function wrapText(
 
 function drawLinks(context: CanvasRenderingContext2D, links: LinkItem[], startY: number): LinkBadge[] {
   const badges = links.slice(0, 2).map((link) => {
-    const short = link.label === "LinkedIn" ? "in" : link.label === "Resume PDF" ? "PDF" : "GH";
+    const short = link.label === "LinkedIn" ? "in" : link.label === "Resume PDF" ? "PDF" : link.label === "GitHub" ? "GH" : "WEB";
     return {
       label: short,
       text: link.label,
@@ -704,6 +704,7 @@ export class PanelEntity implements InteractiveEntity {
   private drawWebSurface(context: CanvasRenderingContext2D): void {
     if (this.config.embed && this.experienceSurface) {
       const surface = this.experienceSurface;
+      const footerY = this.canvas.height - 112;
       const links: LinkItem[] = surface.url
         ? [
             { label: "Open Role", url: surface.url },
@@ -711,14 +712,16 @@ export class PanelEntity implements InteractiveEntity {
           ]
         : [];
 
-      this.syncLinkHotspots(drawLinks(context, links, 856));
+      this.syncLinkHotspots(drawLinks(context, links, footerY));
 
       context.fillStyle = "rgba(39, 98, 122, 0.94)";
       context.font = "600 22px IBM Plex Mono, monospace";
       context.fillText("Experience Surface", 48, 338);
 
+      const frameY = 364;
+      const frameHeight = this.canvas.height - frameY - 170;
       context.strokeStyle = "rgba(127, 187, 208, 0.75)";
-      context.strokeRect(48, 364, 928, 448);
+      context.strokeRect(48, frameY, this.canvas.width - 96, frameHeight);
 
       context.fillStyle = "rgba(18, 45, 58, 0.98)";
       context.font = "700 30px IBM Plex Mono, monospace";
@@ -743,7 +746,7 @@ export class PanelEntity implements InteractiveEntity {
       context.font = "400 20px IBM Plex Mono, monospace";
       let offsetY = 546;
       surface.lines.forEach((line) => {
-        offsetY = wrapText(context, `- ${line}`, 72, offsetY, 876, 30, 2) + 12;
+        offsetY = wrapText(context, `- ${line}`, 72, offsetY, this.canvas.width - 140, 30, 3) + 12;
       });
 
       return;
