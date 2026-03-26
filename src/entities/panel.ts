@@ -317,11 +317,6 @@ export class PanelEntity implements InteractiveEntity {
       return;
     }
 
-    if (this.config.embed && this.interactionContext?.openEmbeddedPanel) {
-      this.interactionContext.openEmbeddedPanel(this.config.id);
-      return;
-    }
-
     if (this.config.url) {
       window.open(this.config.url, "_blank", "noopener,noreferrer");
       this.interactionContext?.overlay.setStatus(this.config.title, "Opened source link in a new tab.");

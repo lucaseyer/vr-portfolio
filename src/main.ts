@@ -9,6 +9,7 @@ import { PortfolioScene } from "./core/scene";
 import { ComputerTerminal } from "./entities/computerTerminal";
 import { EmbeddedWebSurface } from "./entities/embeddedWebSurface";
 import { PanelEntity } from "./entities/panel";
+import { SiteLinkRail } from "./entities/siteLinkRail";
 import { InteractionSystem } from "./systems/interactionSystem";
 import { NavigationSystem } from "./systems/navigationSystem";
 import { OverlayUI } from "./ui/overlay";
@@ -37,12 +38,6 @@ async function bootstrap(): Promise<void> {
   const overlay = new OverlayUI(app, input);
   const scene = new PortfolioScene();
 
-  const embeddedExitButton = document.createElement("button");
-  embeddedExitButton.className = "embedded-exit-button";
-  embeddedExitButton.textContent = "Back to room";
-  embeddedExitButton.hidden = true;
-  app.appendChild(embeddedExitButton);
-
   scene.add(createLighting());
 
   const room = createRoom();
@@ -59,49 +54,15 @@ async function bootstrap(): Promise<void> {
     panelConfigs.map((config) => PanelEntity.create(config)),
   );
 
-  const embeddedSurfaces = new Map<string, EmbeddedWebSurface>();
-  let activeEmbeddedPanelId: string | null = null;
-
-  const deactivateEmbeddedPanels = (): void => {
-    embeddedSurfaces.forEach((surface) => surface.deactivate());
-    renderer.cssRenderer.domElement.classList.remove("is-interactive");
-    embeddedExitButton.hidden = true;
-    if (activeEmbeddedPanelId) {
-      activeEmbeddedPanelId = null;
-      overlay.setStatus("Back in the room", "Cursor is free. Click the room when you want mouse look again.");
-    }
-  };
-
   panelEntities.forEach((panel, index) => {
     room.mountPanel(panel);
 
     const config = panelConfigs[index];
     if (config.embed && config.url) {
-      const surface = new EmbeddedWebSurface(config);
-      embeddedSurfaces.set(config.id, surface);
-      panel.group.add(surface.object3D);
-    }
-  });
-
-  renderer.cssRenderer.domElement.addEventListener("mousedown", (event) => {
-    if (event.target === renderer.cssRenderer.domElement) {
-      deactivateEmbeddedPanels();
-    }
-  });
-
-  embeddedExitButton.addEventListener("click", () => {
-    deactivateEmbeddedPanels();
-  });
-
-  document.addEventListener("pointerlockchange", () => {
-    if (document.pointerLockElement === renderer.domElement) {
-      deactivateEmbeddedPanels();
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.code === "Escape" && activeEmbeddedPanelId) {
-      deactivateEmbeddedPanels();
+      panel.group.add(new EmbeddedWebSurface(config).object3D);
+      const rail = new SiteLinkRail(overlay);
+      panel.group.add(rail.group);
+      (panel as PanelEntity & { siteRail?: SiteLinkRail }).siteRail = rail;
     }
   });
 
@@ -111,20 +72,6 @@ async function bootstrap(): Promise<void> {
   const navigationSystem = new NavigationSystem(camera, input, room);
   const interactionSystem = new InteractionSystem(camera, renderer.domElement, input, {
     overlay,
-    openEmbeddedPanel(id) {
-      const surface = embeddedSurfaces.get(id);
-      if (!surface) {
-        return;
-      }
-
-      activeEmbeddedPanelId = id;
-      input.releasePointerLock();
-      renderer.cssRenderer.domElement.classList.add("is-interactive");
-      embeddedExitButton.hidden = false;
-      embeddedSurfaces.forEach((item) => item.deactivate());
-      surface.activate();
-      overlay.setStatus("Embedded surface active", "Cursor is free inside the site. Use the Back to room button or press Esc when you want to return.");
-    },
     onInspect(entity) {
       entity.interact();
     },
@@ -132,6 +79,10 @@ async function bootstrap(): Promise<void> {
 
   panelEntities.forEach((panel) => interactionSystem.register(panel));
   panelEntities.forEach((panel) => panel.interactives.forEach((entity) => interactionSystem.register(entity)));
+  panelEntities.forEach((panel) => {
+    const rail = (panel as PanelEntity & { siteRail?: SiteLinkRail }).siteRail;
+    rail?.interactives.forEach((entity) => interactionSystem.register(entity));
+  });
   terminal.interactives.forEach((entity) => interactionSystem.register(entity));
 
   const engine = new PortfolioEngine({

@@ -35,7 +35,6 @@ export class EmbeddedWebSurface {
       <span class="embedded-web-dot"></span>
       <span class="embedded-web-title">${config.title}</span>
       <span class="embedded-web-url">${config.url.replace(/^https?:\/\//, "")}</span>
-      <a class="embedded-web-open" href="${config.url}" target="_blank" rel="noopener noreferrer">Open external</a>
     `;
 
     const viewport = document.createElement("div");
@@ -58,11 +57,4 @@ export class EmbeddedWebSurface {
     this.object3D = object;
   }
 
-  activate(): void {
-    this.shell.classList.add("is-interactive");
-  }
-
-  deactivate(): void {
-    this.shell.classList.remove("is-interactive");
-  }
 }

@@ -1,69 +1,133 @@
-# VR Portfolio
+# 🧠 VR Portfolio
 
-Spatial portfolio built with Three.js, TypeScript, and Vite.
+![VR Walkthrough](./vr-portfolio-nav.gif)
 
-## Run locally
+> this is a portfolio  
+> but you don’t scroll it — you walk through it  
+
+---
+
+![status](https://img.shields.io/badge/status-experimental-black)
+![mode](https://img.shields.io/badge/interface-3D-blue)
+![ux](https://img.shields.io/badge/navigation-non_linear-purple)
+
+---
+
+## 🎮 experience it
+
+👉 **https://lucaseyer.github.io/vr-portfolio/**
+
+*(seriously, don’t clone it first — just go there)*
+
+---
+
+## 🧭 what is this?
+
+a virtual environment where my work is not listed — it’s **placed in space**
+
+instead of:
+- scrolling sections  
+- reading descriptions  
+- opening tabs  
+
+you:
+- move  
+- explore  
+- interact  
+- discover  
+
+---
+
+## 🧩 what’s inside
+
+- 🧠 **experience as environment**  
+- 🧩 **projects as interactive panels**  
+- 🌐 **live project access inside the scene**  
+- 📊 **observability room (WIP)**  
+- 👀 subtle things that don’t scream for attention  
+
+---
+
+## 🧪 tech stack
+
+- three.js / react-three-fiber *(or whatever is currently holding reality together)*  
+- javascript / typescript  
+- custom interaction system  
+- github pages (deployment)  
+
+---
+
+## 🕹️ controls
+
+- `W A S D` → move  
+- `mouse` → look around  
+- `click` → interact  
+
+if you get lost, that’s part of it  
+
+---
+
+## 🧠 philosophy
+
+this project is based on a simple idea:
+
+> developers are still presenting themselves like it’s 2008  
+
+so this tries something else.
+
+---
+
+## ⚠️ observability room
+
+currently under construction  
+
+the idea:
+- real data  
+- real signals  
+- inside a virtual space  
+
+for now:
+> it exists  
+> but it’s not fully alive yet  
+
+---
+
+## 🚀 run locally (if you really want to)
+
+not the intended experience, but:
 
 ```bash
+git clone https://github.com/lucaseyer/vr-portfolio
+cd vr-portfolio
 npm install
 npm run dev
 ```
 
-## Controls
+---
 
-- `W A S D` to move
-- Mouse to look after pressing `▶ PLAY MY CAREER`
-- Mouse wheel to zoom
-- `E` or mouse click to inspect a panel
-- `Esc` to release the mouse
+## 🔮 roadmap
 
-## GitHub Pages
+- [ ] observability room (real data integration)  
+- [ ] better interaction feedback  
+- [ ] guided navigation (optional)  
+- [ ] performance optimizations  
+- [ ] subtle audio layer  
 
-If the repository name will be `vr-portfolio`, this project can be published to:
+---
 
-- `https://<your-user>.github.io/vr-portfolio/`
+## 📬 contact
 
-### 1. Keep the repo name aligned
+if you reached this section, you probably already explored enough  
 
-Use `vr-portfolio` as the GitHub repository name.
+but anyway:
 
-If you publish under another repository name, change the build base path accordingly:
+- github: https://github.com/lucaseyer  
+- linkedin: (you know where it is)  
 
-```bash
-VITE_BASE_PATH=/your-repo-name/ npm run build:pages
-```
+---
 
-### 2. Build for GitHub Pages
+## ⭐ final note
 
-```bash
-npm install
-VITE_BASE_PATH=/vr-portfolio/ npm run build:pages
-```
+this is not meant to replace a resume  
 
-This generates the static site in `dist/`.
-
-### 3. Publish with GitHub Pages
-
-Recommended path:
-
-1. Push the repository to GitHub.
-2. Open `Settings > Pages`.
-3. Set `Source` to `GitHub Actions`.
-4. Add the workflow from `.github/workflows/deploy-pages.yml`.
-5. Push to `main`.
-
-### 4. After deployment
-
-The app should be available at:
-
-- `https://<your-user>.github.io/vr-portfolio/`
-
-## Embedded site note
-
-If you want a panel to render `https://lucaseyer.dev`, that site must explicitly allow iframe embedding from the portfolio origin using `Content-Security-Policy: frame-ancestors ...`.
-
-For GitHub Pages, the origin to allow would typically be:
-
-- `https://<your-user>.github.io`
-
-If you later use a custom domain for this 3D portfolio, update the allowed origin on `lucaseyer.dev`.
+it’s meant to make it feel obsolete

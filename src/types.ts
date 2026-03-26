@@ -38,5 +38,4 @@ export interface DashboardMetric {
 
 export interface InteractionContext {
   overlay: OverlayUI;
-  openEmbeddedPanel?: (id: string) => void;
 }
