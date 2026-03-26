@@ -53,12 +53,45 @@ async function bootstrap(): Promise<void> {
     panelConfigs.map((config) => PanelEntity.create(config)),
   );
 
+  const embeddedSurfaces = new Map<string, EmbeddedWebSurface>();
+  let activeEmbeddedPanelId: string | null = null;
+
+  const deactivateEmbeddedPanels = (): void => {
+    embeddedSurfaces.forEach((surface) => surface.deactivate());
+    renderer.cssRenderer.domElement.classList.remove("is-interactive");
+    if (activeEmbeddedPanelId) {
+      activeEmbeddedPanelId = null;
+      overlay.setStatus("Back in the room", "Mouse look is available again. Aim at a panel and press E or click to interact.");
+    }
+  };
+
   panelEntities.forEach((panel, index) => {
     room.mountPanel(panel);
 
     const config = panelConfigs[index];
     if (config.embed && config.url) {
-      panel.group.add(new EmbeddedWebSurface(config).object3D);
+      const surface = new EmbeddedWebSurface(config);
+      embeddedSurfaces.set(config.id, surface);
+      panel.group.add(surface.object3D);
+    }
+  });
+
+  renderer.cssRenderer.domElement.addEventListener("mousedown", (event) => {
+    if (event.target === renderer.cssRenderer.domElement) {
+      deactivateEmbeddedPanels();
+      input.capturePointerLock();
+    }
+  });
+
+  document.addEventListener("pointerlockchange", () => {
+    if (document.pointerLockElement === renderer.domElement) {
+      deactivateEmbeddedPanels();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "Escape" && activeEmbeddedPanelId) {
+      deactivateEmbeddedPanels();
     }
   });
 
@@ -68,6 +101,19 @@ async function bootstrap(): Promise<void> {
   const navigationSystem = new NavigationSystem(camera, input, room);
   const interactionSystem = new InteractionSystem(camera, renderer.domElement, input, {
     overlay,
+    openEmbeddedPanel(id) {
+      const surface = embeddedSurfaces.get(id);
+      if (!surface) {
+        return;
+      }
+
+      activeEmbeddedPanelId = id;
+      input.releasePointerLock();
+      renderer.cssRenderer.domElement.classList.add("is-interactive");
+      embeddedSurfaces.forEach((item) => item.deactivate());
+      surface.activate();
+      overlay.setStatus("Embedded surface active", "Click, scroll, and navigate inside the site. Press Esc or click outside the panel to return to the room.");
+    },
     onInspect(entity) {
       entity.interact();
     },

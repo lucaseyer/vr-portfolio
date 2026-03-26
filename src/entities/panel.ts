@@ -283,7 +283,7 @@ export class PanelEntity implements InteractiveEntity {
     this.group.rotation.y = config.rotationY ?? 0;
     this.object3D = this.screen;
     this.loadSpeed = 26 + Math.random() * 18;
-    if (config.type === "text") {
+    if (config.type === "text" || config.embed) {
       this.isUnlocked = true;
       this.loadProgress = 100;
     }
@@ -314,6 +314,11 @@ export class PanelEntity implements InteractiveEntity {
   interact(): void {
     if (!this.isUnlocked) {
       this.interactionContext?.overlay.setStatus(this.config.title, "Surface locked. Keep focus on it to finish loading.");
+      return;
+    }
+
+    if (this.config.embed && this.interactionContext?.openEmbeddedPanel) {
+      this.interactionContext.openEmbeddedPanel(this.config.id);
       return;
     }
 
