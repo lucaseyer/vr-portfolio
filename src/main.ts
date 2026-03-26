@@ -37,6 +37,12 @@ async function bootstrap(): Promise<void> {
   const overlay = new OverlayUI(app, input);
   const scene = new PortfolioScene();
 
+  const embeddedExitButton = document.createElement("button");
+  embeddedExitButton.className = "embedded-exit-button";
+  embeddedExitButton.textContent = "Back to room";
+  embeddedExitButton.hidden = true;
+  app.appendChild(embeddedExitButton);
+
   scene.add(createLighting());
 
   const room = createRoom();
@@ -59,9 +65,10 @@ async function bootstrap(): Promise<void> {
   const deactivateEmbeddedPanels = (): void => {
     embeddedSurfaces.forEach((surface) => surface.deactivate());
     renderer.cssRenderer.domElement.classList.remove("is-interactive");
+    embeddedExitButton.hidden = true;
     if (activeEmbeddedPanelId) {
       activeEmbeddedPanelId = null;
-      overlay.setStatus("Back in the room", "Mouse look is available again. Aim at a panel and press E or click to interact.");
+      overlay.setStatus("Back in the room", "Cursor is free. Click the room when you want mouse look again.");
     }
   };
 
@@ -79,8 +86,11 @@ async function bootstrap(): Promise<void> {
   renderer.cssRenderer.domElement.addEventListener("mousedown", (event) => {
     if (event.target === renderer.cssRenderer.domElement) {
       deactivateEmbeddedPanels();
-      input.capturePointerLock();
     }
+  });
+
+  embeddedExitButton.addEventListener("click", () => {
+    deactivateEmbeddedPanels();
   });
 
   document.addEventListener("pointerlockchange", () => {
@@ -110,9 +120,10 @@ async function bootstrap(): Promise<void> {
       activeEmbeddedPanelId = id;
       input.releasePointerLock();
       renderer.cssRenderer.domElement.classList.add("is-interactive");
+      embeddedExitButton.hidden = false;
       embeddedSurfaces.forEach((item) => item.deactivate());
       surface.activate();
-      overlay.setStatus("Embedded surface active", "Click, scroll, and navigate inside the site. Press Esc or click outside the panel to return to the room.");
+      overlay.setStatus("Embedded surface active", "Cursor is free inside the site. Use the Back to room button or press Esc when you want to return.");
     },
     onInspect(entity) {
       entity.interact();

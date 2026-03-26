@@ -6,11 +6,11 @@
     "summary": "QA tooling surface focused on DOM analysis, resilient locators, and embeddable product views.",
     "url": "https://lucaseyer.dev/tabula-qa",
     "position": [
-      -7.15,
+      -7.0,
       2.35,
-      -4.15
+      -4.6
     ],
-    "rotationY": 1.02,
+    "rotationY": 0.98,
     "color": "#60d4ff",
     "tags": [
       "dom",
@@ -25,11 +25,11 @@
     "summary": "Live portfolio surface rendering the public site directly inside the room.",
     "url": "https://lucaseyer.dev",
     "position": [
-      -6.0,
+      -5.35,
       2.45,
-      -7.35
+      -7.2
     ],
-    "rotationY": 0.24,
+    "rotationY": 0.64,
     "color": "#60d4ff",
     "tags": [
       "live",
@@ -56,11 +56,11 @@
       }
     ],
     "position": [
-      -1.65,
+      -0.95,
       2.45,
-      -7.55
+      -7.45
     ],
-    "rotationY": 0.08,
+    "rotationY": 0.02,
     "color": "#8dffda",
     "tags": [
       "qa",
@@ -82,11 +82,11 @@
       }
     ],
     "position": [
-      3.65,
+      4.05,
       2.5,
-      -7.45
+      -7.25
     ],
-    "rotationY": -0.16,
+    "rotationY": -0.22,
     "panelSize": [
       5.9,
       3.9

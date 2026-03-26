@@ -92,6 +92,20 @@ canvas {
   font-size: 18px;
 }
 
+.embedded-web-open {
+  margin-left: 12px;
+  color: #1b5d78;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 6px 10px;
+  border: 1px solid rgba(110, 187, 211, 0.75);
+  background: rgba(235, 246, 250, 0.92);
+}
+
+.embedded-web-open:hover {
+  background: rgba(223, 240, 247, 0.96);
+}
+
 .embedded-web-viewport {
   flex: 1;
   background: #f8fbfd;
@@ -107,6 +121,33 @@ canvas {
 
 .embedded-web-surface.is-interactive .embedded-web-frame {
   pointer-events: auto;
+}
+
+.embedded-web-surface.is-interactive .embedded-web-header {
+  user-select: none;
+}
+
+
+.embedded-exit-button {
+  position: fixed;
+  right: 24px;
+  top: 24px;
+  z-index: 30;
+  border: 1px solid rgba(114, 188, 212, 0.55);
+  background: rgba(247, 251, 253, 0.96);
+  color: #153443;
+  padding: 10px 14px;
+  font: 600 14px "IBM Plex Mono", monospace;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.embedded-exit-button:hover {
+  background: rgba(233, 244, 248, 0.98);
+}
+
+.embedded-exit-button[hidden] {
+  display: none;
 }
 
 .ui-layer {
