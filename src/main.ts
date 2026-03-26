@@ -15,6 +15,15 @@ import { createLighting } from "./world/lighting";
 import { createRoom } from "./world/room";
 import { PanelConfig } from "./types";
 
+function withBaseUrl(path?: string): string | undefined {
+  if (!path || !path.startsWith("/")) {
+    return path;
+  }
+
+  const base = import.meta.env.BASE_URL;
+  return `${base.replace(/\/$/, "")}${path}`;
+}
+
 async function bootstrap(): Promise<void> {
   const app = document.querySelector<HTMLDivElement>("#app");
   if (!app) {
@@ -34,7 +43,13 @@ async function bootstrap(): Promise<void> {
 
   // Panels are data-driven entities, so adding a new surface is a content change rather than a scene rewrite.
   const panelEntities = await Promise.all(
-    (panels as PanelConfig[]).map((config) => PanelEntity.create(config)),
+    (panels as PanelConfig[]).map((config) =>
+      PanelEntity.create({
+        ...config,
+        imageUrl: withBaseUrl(config.imageUrl),
+        data: withBaseUrl(config.data),
+      }),
+    ),
   );
 
   panelEntities.forEach((panel) => {
