@@ -15,7 +15,7 @@
 
 ## 🎮 experience it
 
-👉 **https://lucaseyer.github.io/vr-portfolio/**
+👉 **https://lab.lucaseyer.dev/**
 
 *(seriously, don’t clone it first — just go there)*
 
@@ -53,7 +53,7 @@ you:
 - three.js / react-three-fiber *(or whatever is currently holding reality together)*  
 - javascript / typescript  
 - custom interaction system  
-- github pages (deployment)  
+- github pages + custom domain (`lab.lucaseyer.dev`)  
 
 ---
 
